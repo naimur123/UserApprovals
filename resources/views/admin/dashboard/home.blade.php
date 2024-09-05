@@ -6,7 +6,7 @@
         <div class="row">
             <!-- Active Users -->
             <div class="col-md-4">
-                <div class="card bg-success">
+                <div class="card bg-success bg-gradient">
                     <div class="card-block">
                         <div class="row align-items-end">
                             <div class="col-8">
@@ -22,7 +22,7 @@
             </div>
             <!-- Pending Users -->
             <div class="col-md-4">
-                <div class="card bg-warning">
+                <div class="card bg-warning bg-gradient">
                     <div class="card-block">
                         <div class="row align-items-end">
                             <div class="col-8">
@@ -38,7 +38,7 @@
             </div>
             <!-- Rejected Users -->
             <div class="col-md-4">
-                <div class="card bg-danger">
+                <div class="card bg-danger bg-gradient">
                     <div class="card-block">
                         <div class="row align-items-end">
                             <div class="col-8">
