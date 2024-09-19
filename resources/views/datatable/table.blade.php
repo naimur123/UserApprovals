@@ -7,8 +7,15 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-12">
-                        <h5>{{ ucfirst( str_replace(['_','-'], ' ', $pageTitle) ) }}</h5>
+                    <div class="row">
+                        <div class="col-12">
+                            <h5>{{ ucfirst( str_replace(['_','-'], ' ', $pageTitle) ) }}</h5>
+                        </div>
+                        @if( isset($create) && $create )
+                            <div class="col-4 text-right">
+                                <a class="btn btn-primary btn-sm" href="{{ $create }}">Create new</a>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

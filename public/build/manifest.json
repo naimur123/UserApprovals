@@ -6,17 +6,17 @@
     "isEntry": true
   },
   "resources/css/custom/custom.css": {
-    "file": "assets/custom-DwLT2ybU.css",
+    "file": "assets/custom-m_fxqTuT.css",
     "src": "resources/css/custom/custom.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-DmA0Uvym.js",
+    "file": "assets/app-BYUE29nK.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app-DgOWolVN.css"
+      "assets/app-M3xoEN_e.css"
     ]
   }
 }

@@ -235,3 +235,13 @@ button.dt-button:first-child, div.dt-button:first-child{
 .btn{
     border: none;
 }
+
+.progress-bar {
+    background-color: #28a745;
+    font-weight: bold;
+    font-size: 16px;
+}
+.custom-vr {
+    width: 2px !important;  /* Force the width if necessary */
+    background-color: #000; /* Set the color */
+}

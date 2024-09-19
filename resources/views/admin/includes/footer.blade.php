@@ -19,6 +19,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 
+ <!-- Handson -->
+ <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+
 @include('admin.includes.alert')
 <script>
     $(document).ready(function() {
@@ -29,21 +32,28 @@
 
         $('#modal_close').click(function(){
             $("#user_view").modal('hide');
-        })
+        });
+        
     });
 
+    /* Toaster Alert */
+    function set_alert(type, message) {
+        toastr[type](message);
+    }
+
     /* Approve/Reject request */
-    function approve_request(user_id, status){
-        if(user_id){
+    function approve_request(id, status, rel_type){
+        if(id){
             $.ajax({
-                url: '{{ route("approve_pending_user") }}',
+                url: '{{ route("pending_list_approve") }}',
                 type: "POST",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data : {
-                    id : user_id,
-                    approve_staus: status
+                    id : id,
+                    approve_staus: status,
+                    rel_type: rel_type
                 },
                 success : function(response){
                     if(response.success === true){
@@ -79,6 +89,43 @@
                 }
             })
         }
+    }
+
+    /* Input Validation */
+    function validateInput(inputFields){
+        let isValid = true;
+        // alert(inputFields);
+        inputFields.forEach(function (fieldName) {
+            const input = $(`[name="${fieldName}"]`);
+            if (input.val() === '') {
+                input.addClass('is-invalid');
+                isValid = false;
+            } else {
+                input.removeClass('is-invalid');
+            }
+        });
+        // alert(isValid);
+        return isValid;
+    }
+
+    /* Handson table validation */
+    function validateHandson(handsonData, from) {
+        let isValid = true;
+        let message = 'can\'t be empty';
+
+        if (!handsonData.some(row => row.some(cell => cell !== null && cell !== ''))) {
+            isValid = false;
+
+            if (from === 'billing') {
+                message = 'Billing information ' + message;
+            } else if (from === 'technician') {
+                message = 'Technician information ' + message;
+            }
+
+            set_alert('error', message);
+        }
+        
+        return isValid;
     }
 </script>
 

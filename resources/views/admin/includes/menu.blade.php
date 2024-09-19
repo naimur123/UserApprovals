@@ -38,7 +38,7 @@
 
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" href="#userCollapse" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('user_list') || request()->routeIs('user_pending_list') ? 'true' : 'false' }}" aria-controls="userCollapse">
-                            <i class="fas fa-wallet"></i>
+                            <i class="fas fa-user"></i>
                             Users
                             <i class="fas fa-chevron-down"></i>
                         </a>
@@ -48,6 +48,23 @@
                             <a class="nav-link {{ request()->routeIs('user_pending_list') && request()->request_list == 'rejected' ? 'active' : '' }}" href="{{ route('user_pending_list', 'rejected') }}">Rejected Users</a>
                         </div>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="#companyCollapse" data-bs-toggle="collapse"
+                            aria-expanded="{{ request()->routeIs('company_list') || request()->routeIs('company_pending_list') || request()->routeIs('company_create') || request()->routeIs('company_details') ? 'true' : 'false' }}"
+                            aria-controls="companyCollapse">
+                            <i class="fa-solid fa-building"></i>
+                            Company
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="collapse {{ request()->routeIs('company_list') || request()->routeIs('company_pending_list') || request()->routeIs('company_create') || request()->routeIs('company_details') ? 'show' : '' }}"
+                            id="companyCollapse">
+                            <a class="nav-link {{ request()->routeIs('company_list') || request()->routeIs('company_create') || request()->routeIs('company_details') ? 'active' : '' }}" href="{{ route('company_list') }}">All Companies</a>
+                            <a class="nav-link {{ request()->routeIs('company_pending_list') && request()->request_list == 'pending' ? 'active' : '' }}" href="{{ route('company_pending_list', 'pending') }}">Pending Companies</a>
+                            <a class="nav-link {{ request()->routeIs('company_pending_list') && request()->request_list == 'rejected' ? 'active' : '' }}" href="{{ route('company_pending_list', 'rejected') }}">Rejected Companies</a>
+                        </div>
+                    </li>
+                    
                 </ul>
             </div>
         </div>

@@ -7,5 +7,8 @@ return [
     "email"            => "Email",
     "phone"            => "Phone",
     "action"           => "Action",
+    "company_name"     => "Company name",
+    "company_address"  => "Company address",
+    "company_email"    => "Company email",
 
 ];

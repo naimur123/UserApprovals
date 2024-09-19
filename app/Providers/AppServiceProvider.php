@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
             $requestList = request()->route('request_list');
     
             if ($requestList) {
-                $routeName =  ucfirst($requestList) . ' Users';
+                $routeName =  ucfirst($requestList) . ' List';
             }else{
                 $routeName = str_replace('_', ' ', ucfirst($routeName));
             }

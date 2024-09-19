@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -53,9 +54,12 @@ class LoginController extends Controller
     // After Login Dashboard
     public function dashboard(Request $request){
         $params = [
-           'active_users'  => User::where('is_active', 1)->get(),
-           'pending_users' => get_pending_users(),
-           'rejected_users' => get_rejected_users(),
+        //    'active_users'  => User::where('is_active', 1)->get(),
+        //    'pending_users' => get_pending_users(),
+        //    'rejected_users' => get_rejected_users(),
+           'active_companies'  => Company::where('is_active', 1)->get(),
+           'pending_companies' => get_pending_approvals('companies'),
+           'rejected_companies' => get_rejected_list('companies'),
         ];
         return view('admin.dashboard.home', $params);
     }

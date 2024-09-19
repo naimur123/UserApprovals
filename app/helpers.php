@@ -2,6 +2,8 @@
 
 /* Get alert Message */
 
+use App\Models\Approvals;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -61,6 +63,55 @@ if (!function_exists('getRouteName')) {
         }
 
         return str_replace('_', ' ', ucfirst($routeName)); 
+    }
+}
+
+/* Auto send Approval request */
+if (!function_exists('auto_send_approval_request')) {
+    function auto_send_approval_request($approval_data)
+    {
+        $data = new Approvals();
+        $data->rel_id     =  $approval_data['rel_id'];
+        $data->rel_type   =  $approval_data['rel_type'];
+        $data->user_id    =  1;
+        $data->save();
+    }
+}
+
+/* Get Pending Approvals */
+if (!function_exists('get_pending_approvals')) {
+    function get_pending_approvals($rel_type)
+    {
+        $pending_approvals = '';
+        if($rel_type === 'companies'){
+            $pending_approvals = DB::table('companies as co')
+                                    ->select('co.*')
+                                    ->leftJoin('approvals as ap', 'ap.rel_id', '=', 'co.id')
+                                    ->whereNull('ap.approve')
+                                    ->where('ap.user_id', Auth::user()->id)
+                                    ->where('co.is_active', 0)
+                                    ->where('co.approve_status', 1)->get();
+        }
+        
+        return $pending_approvals;
+    }
+}
+
+/* Get Rejected List */
+if (!function_exists('get_rejected_list')) {
+    function get_rejected_list($rel_type)
+    {
+        $rejected_list = '';
+        if($rel_type === 'companies'){
+            $rejected_list = DB::table('companies as co')
+                                    ->select('co.*')
+                                    ->leftJoin('approvals as ap', 'ap.rel_id', '=', 'co.id')
+                                    ->where('ap.approve', 3)
+                                    ->where('co.is_active', 0)
+                                    ->where('co.approve_status', 3)->get();
+        }
+        
+        return $rejected_list;
     }
 }
 

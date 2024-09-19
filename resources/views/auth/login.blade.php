@@ -62,7 +62,7 @@
                                     {{ __('Forgot Your Password?') }}
                                 </a>
                             @endif --}}
-                           <a href="{{ route('register') }}" class="btn btn-info">{{ __('Register') }}</a>
+                           {{-- <a href="{{ route('register') }}" class="btn btn-info">{{ __('Register') }}</a> --}}
 
                         </div>
                     </div>
