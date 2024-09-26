@@ -168,7 +168,7 @@ class OthersController extends Controller
         
         $datatable =  DataTables::of($get_data)
                                 ->addColumn('#', function(){ return ++$this->index; })
-                                ->addColumn('name', function($row){ return $row->name; })
+                                ->addColumn('types_name', function($row){ return $row->name; })
                                 ->addColumn('added_by', function($row){ return get_user_name($row->added_by); })
                                 ->addColumn('action', function($row){ return ''; });
 
