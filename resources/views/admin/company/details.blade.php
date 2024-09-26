@@ -143,7 +143,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <p>
+                    <p class="fw-bold">
                         Trade License: 
                         <a href="{{ asset('storage/' . $company_details->trade_license) }}" class="text-decoration-none" download>
                             {{ basename($company_details->trade_license) }}

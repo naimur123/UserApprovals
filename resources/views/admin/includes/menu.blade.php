@@ -36,19 +36,23 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center" href="#userCollapse" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('user_list') || request()->routeIs('user_pending_list') ? 'true' : 'false' }}" aria-controls="userCollapse">
-                            <i class="fas fa-user"></i>
-                            Users
-                            <i class="fas fa-chevron-down"></i>
-                        </a>
-                        <div class="collapse {{ request()->routeIs('user_list') || request()->routeIs('user_pending_list') ? 'show' : '' }}" id="userCollapse">
-                            <a class="nav-link {{ request()->routeIs('user_list') ? 'active' : '' }}" href="{{ route('user_list') }}">All Users</a>
-                            <a class="nav-link {{ request()->routeIs('user_pending_list') && request()->request_list == 'pending' ? 'active' : '' }}" href="{{ route('user_pending_list', 'pending') }}">Pending Users</a>
-                            <a class="nav-link {{ request()->routeIs('user_pending_list') && request()->request_list == 'rejected' ? 'active' : '' }}" href="{{ route('user_pending_list', 'rejected') }}">Rejected Users</a>
-                        </div>
-                    </li>
-
+                    <!-- Users -->
+                    @if(is_admin())
+                        <li class="nav-item">
+                            <a class="nav-link d-flex align-items-center" href="#userCollapse" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('user_list') || request()->routeIs('user_pending_list') ? 'true' : 'false' }}" aria-controls="userCollapse">
+                                <i class="fas fa-user"></i>
+                                Users
+                                <i class="fas fa-chevron-down"></i>
+                            </a>
+                            <div class="collapse {{ request()->routeIs('user_list') || request()->routeIs('user_register') || request()->routeIs('user_pending_list') ? 'show' : '' }}" id="userCollapse">
+                                <a class="nav-link {{ request()->routeIs('user_list') || request()->routeIs('user_register') ? 'active' : '' }}" href="{{ route('user_list') }}">All Users</a>
+                                {{-- <a class="nav-link {{ request()->routeIs('user_pending_list') && request()->request_list == 'pending' ? 'active' : '' }}" href="{{ route('user_pending_list', 'pending') }}">Pending Users</a>
+                                <a class="nav-link {{ request()->routeIs('user_pending_list') && request()->request_list == 'rejected' ? 'active' : '' }}" href="{{ route('user_pending_list', 'rejected') }}">Rejected Users</a> --}}
+                            </div>
+                        </li>
+                    @endif
+                    
+                    <!-- Company -->
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" href="#companyCollapse" data-bs-toggle="collapse"
                             aria-expanded="{{ request()->routeIs('company_list') || request()->routeIs('company_pending_list') || request()->routeIs('company_create') || request()->routeIs('company_details') ? 'true' : 'false' }}"
@@ -57,14 +61,56 @@
                             Company
                             <i class="fas fa-chevron-down"></i>
                         </a>
-                        <div class="collapse {{ request()->routeIs('company_list') || request()->routeIs('company_pending_list') || request()->routeIs('company_create') || request()->routeIs('company_details') ? 'show' : '' }}"
+                        <div class="collapse {{ request()->routeIs('company_list') || request()->routeIs('company_pending_list') || request()->routeIs('company_create') || request()->routeIs('company_edit') || request()->routeIs('company_details') ? 'show' : '' }}"
                             id="companyCollapse">
-                            <a class="nav-link {{ request()->routeIs('company_list') || request()->routeIs('company_create') || request()->routeIs('company_details') ? 'active' : '' }}" href="{{ route('company_list') }}">All Companies</a>
+                            <a class="nav-link {{ request()->routeIs('company_list') || request()->routeIs('company_create') || request()->routeIs('company_edit') || request()->routeIs('company_details') ? 'active' : '' }}" href="{{ route('company_list') }}">All Companies</a>
                             <a class="nav-link {{ request()->routeIs('company_pending_list') && request()->request_list == 'pending' ? 'active' : '' }}" href="{{ route('company_pending_list', 'pending') }}">Pending Companies</a>
                             <a class="nav-link {{ request()->routeIs('company_pending_list') && request()->request_list == 'rejected' ? 'active' : '' }}" href="{{ route('company_pending_list', 'rejected') }}">Rejected Companies</a>
                         </div>
                     </li>
-                    
+
+                    <!-- Orders -->
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="#orderCollapse" data-bs-toggle="collapse"
+                            aria-expanded="{{ request()->routeIs('order_list') || request()->routeIs('order_pending_list') || request()->routeIs('order_create') || request()->routeIs('order_details') ? 'true' : 'false' }}"
+                            aria-controls="orderCollapse">
+                            <i class="fa-solid fa-building"></i>
+                            Orders
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="collapse {{ request()->routeIs('order_list') || request()->routeIs('order_pending_list') || request()->routeIs('order_create') || request()->routeIs('order_edit') || request()->routeIs('order_details') ? 'show' : '' }}"
+                            id="orderCollapse">
+                            <a class="nav-link {{ request()->routeIs('order_list') || request()->routeIs('order_create') || request()->routeIs('order_edit') || request()->routeIs('order_details') ? 'active' : '' }}" href="{{ route('order_list') }}">All Orders</a>
+                            {{-- <a class="nav-link {{ request()->routeIs('order_pending_list') && request()->request_list == 'pending' ? 'active' : '' }}" href="{{ route('order_pending_list', 'pending') }}">Pending Orders</a>
+                            <a class="nav-link {{ request()->routeIs('order_pending_list') && request()->request_list == 'rejected' ? 'active' : '' }}" href="{{ route('order_pending_list', 'rejected') }}">Rejected Orders</a> --}}
+                        </div>
+                    </li>
+
+                    <!-- Customer -->
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center {{ request()->is('customer_list') || request()->is('customer_create') ? 'active' : '' }}" href="{{ route('customer_list') }}">
+                           <i class="fa-solid fa-users"></i>
+                            Customer
+                        </a>
+                    </li>
+
+                     <!-- Others -->
+                     <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="#othersCollapse" data-bs-toggle="collapse"
+                            aria-expanded="{{ request()->routeIs('payment_type_list') || request()->routeIs('sales_type_list') || request()->routeIs('solution_list')  ? 'true' : 'false' }}"
+                            aria-controls="othersCollapse">
+                            <i class="fa-solid fa-circle-info"></i>
+                            Others
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="collapse {{ request()->routeIs('payment_type_list') || request()->routeIs('payment_type_create') || request()->routeIs('sales_type_list') || request()->routeIs('sales_type_create') || request()->routeIs('solution_list') || request()->routeIs('solution_create') || request()->routeIs('item_list') || request()->routeIs('item_create') ? 'show' : '' }}"
+                            id="othersCollapse">
+                            <a class="nav-link {{ request()->routeIs('payment_type_list') || request()->routeIs('payment_type_create') ? 'active' : '' }}" href="{{ route('payment_type_list') }}">Payment Types</a>
+                            <a class="nav-link {{ request()->routeIs('sales_type_list') || request()->routeIs('sales_type_create') ? 'active' : '' }}" href="{{ route('sales_type_list') }}">Sales Types</a>
+                            <a class="nav-link {{ request()->routeIs('solution_list') || request()->routeIs('solution_create') ? 'active' : '' }}" href="{{ route('solution_list') }}">Solutions</a>
+                            <a class="nav-link {{ request()->routeIs('item_list') || request()->routeIs('item_create') ? 'active' : '' }}" href="{{ route('item_list') }}">Items</a>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>

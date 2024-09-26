@@ -49,8 +49,17 @@ class UserController extends Controller
             'dataTableColumns'  => $dataTableColumns,
             'dataTableUrl'      => Null,
             'pageTitle'         => $pageTitle ,
+            'create'            => route('user_register')
         ];
+   
         return view('datatable.table', $params);
+    }
+
+
+    /* Show Register Form */
+    public function showRegisterForm(Request $request)
+    {
+        return view('admin.user.register');
     }
 
     /* Approve Pending Request */
@@ -95,6 +104,7 @@ class UserController extends Controller
             }
         }
     }
+
     /* Resend User Approve Request */
     public function resend_user_approve_request(Request $request){
        $resend_users =  User::leftJoin('user_approvals', 'users.id', '=', 'user_approvals.user_id')
@@ -119,21 +129,21 @@ class UserController extends Controller
         }else if(!empty($user_list) && $user_list == 'rejected'){
             $users = get_rejected_users();
         }else{
-            $users = User::where('is_active', 1)->get();
+            $users = User::where('is_active', 1)->where('is_admin', 0)->get();
         }
         $datatable =  DataTables::of($users)
-            ->addColumn('#', function(){ return ++$this->index; })
-            ->addColumn('user_name', function($row){ return $row->user_name; })
-            ->addColumn('full_name', function($row){ return ucwords($row->full_name); })
-            ->addColumn('email', function($row){ return $row->email; })
-            ->addColumn('phone', function($row){ return $row->phone; });
+                                ->addColumn('#', function(){ return ++$this->index; })
+                                ->addColumn('user_name', function($row){ return $row->user_name; })
+                                ->addColumn('full_name', function($row){ return ucwords($row->full_name); })
+                                ->addColumn('email', function($row){ return $row->email; })
+                                ->addColumn('phone', function($row){ return $row->phone; });
 
         if($user_list === ''){
             $datatable->addColumn('user_name', function($row) {
                 $rowDetails = '<div class="row-option">';
                 $rowDetails .= '<span>' . $row->user_name . '</span>';
                 $rowDetails .= '<div class="button-group mt-2">';
-                $rowDetails .= '<a href="#" class="text-decoration-none" onclick="user_view(' . $row->id . ')">Edit</a> ';
+                $rowDetails .= '<a href="#" class="text-decoration-none" onclick="user_view(' . $row->id . ')">Details</a> ';
                 $rowDetails .= '</div>';
                 $rowDetails .= '</div>';
                 return $rowDetails;

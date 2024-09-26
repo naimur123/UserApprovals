@@ -76,7 +76,7 @@ class RegisterController extends Controller
         $validator = Validator::make($request->all(), [
             'full_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone' => ['required', 'string', 'max:11', 'unique:users'],
+            'phone' => ['required', 'string', 'min:11', 'max:11', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
 
@@ -92,12 +92,14 @@ class RegisterController extends Controller
             $data->email           = $request->email;
             $data->password        = Hash::make($request->password);
             $data->image           = $request->image;
-            $data->is_approved     = 0;
+            $data->is_approved     = 1;
+            $data->is_active       = 1;
             $data->save();
             DB::commit();
 
-            $this->send_approval($data, $request);
-            return back()->with('success', 'Registered, Wait for approval');
+            // $this->send_approval($data, $request);
+            set_alert('success', 'Successfully Registered');
+            return back();
 
         }catch(Exception $e){
             DB::rollBack();

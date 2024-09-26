@@ -131,6 +131,7 @@
                     className: 'btn-refresh'
                 }
             ],
+            autoWidth: false,
         });
     });
 </script>

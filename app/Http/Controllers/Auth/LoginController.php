@@ -57,9 +57,10 @@ class LoginController extends Controller
         //    'active_users'  => User::where('is_active', 1)->get(),
         //    'pending_users' => get_pending_users(),
         //    'rejected_users' => get_rejected_users(),
-           'active_companies'  => Company::where('is_active', 1)->get(),
-           'pending_companies' => get_pending_approvals('companies'),
+           'active_companies'   => get_active_list('companies'),
+           'pending_companies'  => get_pending_approvals('companies'),
            'rejected_companies' => get_rejected_list('companies'),
+           'all_orders'         => get_active_list('orders')
         ];
         return view('admin.dashboard.home', $params);
     }

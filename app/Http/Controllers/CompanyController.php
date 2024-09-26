@@ -18,13 +18,13 @@ class CompanyController extends Controller
 
      /* Get Table Column List */
      private function getColumns(){
-        $columns = ['#', 'company_name', 'company_address', 'company_email'];
+        $columns = ['#', 'company_name', 'company_address', 'company_email', 'added_by'];
         return $columns;
     }
 
     /* Get DataTable Column List */
     private function getDataTableColumns(){
-        $columns = ['#', 'company_name', 'company_address', 'company_email'];
+        $columns = ['#', 'company_name', 'company_address', 'company_email', 'added_by'];
         return $columns;
     }
 
@@ -37,8 +37,10 @@ class CompanyController extends Controller
         if(isset($request->request_list)){
             if($request->request_list == 'pending'){
                 $company_list = 'pending';
-                $columns[] = "action";
-                $dataTableColumns[] = "action";
+                if(is_admin()){
+                    $columns[] = "action";
+                    $dataTableColumns[] = "action";
+                }
                 $pageTitle = 'Pending Company List';
             }else{
                 $company_list = 'rejected';
@@ -61,7 +63,16 @@ class CompanyController extends Controller
 
     /* Create view */
     public function create(Request $request){
-        return view('admin.company.create');
+        $params = [];
+        if(isset($request->id)){
+            $company = Company::find($request->id);
+            if($company->added_by != current_user() && !is_admin()){
+                set_alert('error', 'Access Denied');
+                return back();
+            }
+            $params['company'] = $company;
+        }
+        return view('admin.company.create', $params);
     }
 
     /* Company Store */
@@ -100,7 +111,17 @@ class CompanyController extends Controller
             $technician_info_json = json_encode($technician_info);
             
             DB::beginTransaction();
-            $data = $this->getModel();
+            if( $request->id == 0 ){
+                $data = $this->getModel();
+                $data->added_by         =  current_user() ?? $request->user()->id;
+                $message = "Company Added Successfully";
+            }
+            else{
+                $data = $this->getModel()->find($request->id);
+                $data->updated_by       =   current_user() ?? $request->user()->id;
+                $message = "Company Updated Successfully";
+            }
+
             $data->name                 =  $request->name;
             $data->address              =  $request->address;
             $data->email                =  $request->email;
@@ -119,16 +140,18 @@ class CompanyController extends Controller
                 $trade_license = $request->file('trade_license');
                 $data->trade_license = $this->uploadImage($trade_license,$this->trade_license);
             }
-            $data->is_active = 0;
-            $data->approve_status = 1;
+            $data->is_active = $data->is_active ?? 0;
+            $data->approve_status = $data->approve_status ?? 1;
             $data->save();
             DB::commit();
-            $approval_data = [
-                'rel_id' => $data->id,
-                'rel_type' => 'companies'
-            ];
-            auto_send_approval_request($approval_data);
-            set_alert("success", "Company Added Successfully");
+            if( $request->id == 0 ){
+                $approval_data = [
+                    'rel_id' => $data->id,
+                    'rel_type' => 'companies'
+                ];
+                auto_send_approval_request($approval_data);
+            }
+            set_alert("success", $message);
             return back();
 
         }catch(Exception $e){
@@ -137,10 +160,14 @@ class CompanyController extends Controller
         }
     }
 
-    /* COmpany Details */
+    /* Company Details */
     public function company_details(Request $request){
         if(!empty($request->id)){
             $company = Company::find($request->id);
+            if($company->added_by != current_user() && !is_admin()){
+                set_alert('error', 'You don\'t have any permission to show is');
+                return back();
+            }
             $params = [
                'company_details' => $company
             ];
@@ -154,37 +181,38 @@ class CompanyController extends Controller
         }else if(!empty($company_list) && $company_list == 'rejected'){
             $company = get_rejected_list('companies');
         }else{
-            $company = Company::where('is_active', 1)->get();
+            $company = get_active_list('companies');
         }
+     
         $datatable =  DataTables::of($company)
-            ->addColumn('#', function(){ return ++$this->index; })
-            ->addColumn('company_name', function($row){ return $row->name; })
-            ->addColumn('company_address', function($row){ return ucwords($row->address); })
-            ->addColumn('company_email', function($row){ return $row->email; });
+                                ->addColumn('#', function(){ return ++$this->index; })
+                                ->addColumn('company_address', function($row){ return ucwords($row->address); })
+                                ->addColumn('company_email', function($row){ return $row->email; })
+                                ->addColumn('added_by', function($row){ return get_user_name($row->added_by); });
 
-        if($company_list === ''){
-            $datatable->addColumn('company_name', function($row) {
-                $rowDetails = '<div class="row-option">';
-                $rowDetails .= '<span>' . $row->name . '</span>';
-                $rowDetails .= '<div class="button-group mt-2">';
-                $rowDetails .= '<a href="' . route('company_details', $row->id) . '" class="text-decoration-none">Details</a> ';
-                // $rowDetails .= ' <a href="#" class="text-decoration-none">Edit</a> ';
-                $rowDetails .= '</div>';
-                $rowDetails .= '</div>';
-                return $rowDetails;
-            })->rawColumns(['company_name']);
-        }
-        else{
-            $datatable->addColumn('company_name', function($row) { return $row->name; });
-        }
-
+        $datatable->addColumn('company_name', function($row) use ($company_list) {
+            $rowDetails = '<div class="row-option">';
+            $rowDetails .= '<span>' . $row->name . '</span>';
+            $rowDetails .= '<div class="button-group mt-2">';
+            $rowDetails .= '<a href="' . route('company_details', $row->id) . '" class="text-decoration-none">Details</a>';
+            
+            if ($company_list != 'pending' && $company_list != 'rejected') {
+                $rowDetails .= ' | <a href="' . route('company_edit', $row->id) . '" class="text-decoration-none">Edit</a>';
+            }
+            
+            $rowDetails .= '</div>';
+            $rowDetails .= '</div>';
+            
+            return $rowDetails;
+        })->escapeColumns(['company_name' => true]);
+        
         if ($company_list == 'pending') {
             $datatable->addColumn('action', function($row) {
                 $rel_type = "companies";
                 $actions = '<a href="#" class="btn btn-success btn-sm" onclick="approve_request(' . $row->id . ', 2, \'' . $rel_type . '\')"><i class="fa-solid fa-check"></i></a>';
-                $actions  .= ' <a href="#" class="btn btn-danger btn-sm" onclick="approve_request(' . $row->id . ', 3, \'' . $rel_type . '\')"><i class="fa-solid fa-ban"></i></a>';
+                $actions .= ' <a href="#" class="btn btn-danger btn-sm" onclick="approve_request(' . $row->id . ', 3, \'' . $rel_type . '\')"><i class="fa-solid fa-ban"></i></a>';
                 return $actions;
-            });
+            })->rawColumns(['action']);
         }
         
         return $datatable->make(true);

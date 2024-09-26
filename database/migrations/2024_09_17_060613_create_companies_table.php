@@ -30,6 +30,8 @@ return new class extends Migration
             $table->longText('technician_info')->nullable();
             $table->boolean('is_active')->default(0);
             $table->string('approve_status')->nullable();
+            $table->foreignId('added_by')->nullable()->references('id')->on('users');
+            $table->foreignId('updated_by')->nullable()->references('id')->on('users');
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@
 <div class="row mx-2">
     <div class="col-md-12">
         <div class="row">
-            <!-- Active Users -->
+            <!-- Active Companies -->
             <div class="col-md-4">
                 <div class="card bg-success bg-gradient">
                     <div class="card-block">
@@ -20,7 +20,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Pending Users -->
+            <!-- Pending Companies -->
             <div class="col-md-4">
                 <div class="card bg-warning bg-gradient">
                     <div class="card-block">
@@ -36,7 +36,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Rejected Users -->
+            <!-- Rejected Companies -->
             <div class="col-md-4">
                 <div class="card bg-danger bg-gradient">
                     <div class="card-block">
@@ -52,6 +52,24 @@
                     </div>
                 </div>
             </div>  
+
+            <!-- All orders -->
+            <div class="col-md-4 my-2">
+                <div class="card bg-primary bg-gradient">
+                    <div class="card-block">
+                        <div class="row align-items-end">
+                            <div class="col-8">
+                                <h4 class="text-white mx-2 my-2">{{ count($all_orders) }}</h4>
+                                <h6 class="text-white mx-2">Total Orders</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="{{ route('order_list') }}" class="text-white text-decoration-none">All Orders</a>
+                    </div>
+                </div>
+            </div>  
+
         </div> 
     </div>
 </div>

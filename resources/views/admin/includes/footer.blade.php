@@ -33,7 +33,18 @@
         $('#modal_close').click(function(){
             $("#user_view").modal('hide');
         });
-        
+
+        $('select').select2({
+            placeholder: "None Selected",
+            allowClear: true,
+            width: '100%',
+        });
+
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+        });
+
     });
 
     /* Toaster Alert */
@@ -94,17 +105,32 @@
     /* Input Validation */
     function validateInput(inputFields){
         let isValid = true;
-        // alert(inputFields);
         inputFields.forEach(function (fieldName) {
             const input = $(`[name="${fieldName}"]`);
-            if (input.val() === '') {
-                input.addClass('is-invalid');
-                isValid = false;
-            } else {
-                input.removeClass('is-invalid');
+
+            // $('.error-message').remove();
+            // For select elements
+            if (input.is('select')) {
+                if (input.val() === '') {
+                    input.addClass('is-invalid');
+                    // input.css('border-color', 'red');
+                    // if (input.next('.error-message').length === 0) {
+                    //     input.after('<div class="error-message" style="color: red;">This field is required</div>');
+                    // }
+                    isValid = false;
+                } else {
+                    input.removeClass('is-invalid');
+                }
+            } else if (input.is('input')) {
+                // For input fields
+                if (input.val() === '') {
+                    input.addClass('is-invalid');
+                    isValid = false;
+                } else {
+                    input.removeClass('is-invalid');
+                }
             }
         });
-        // alert(isValid);
         return isValid;
     }
 
@@ -126,7 +152,7 @@
         }
         
         return isValid;
-    }
+    }    
 </script>
 
 

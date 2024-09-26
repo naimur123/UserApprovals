@@ -4,6 +4,13 @@ body {
     min-height: 100vh;
     margin: 0;
     overflow-x: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+input,
+textarea,
+select {
+    box-shadow: none !important;
 }
 
 #app {
@@ -29,6 +36,20 @@ body {
     left: 0;
     z-index: 1040;
     padding-top: 60px;
+    overflow-y: auto;
+}
+
+/* Custom scrollbar styles */
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(221, 216, 216, 0.5);
+    border-radius: 10px;
+}
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 .sidebar.collapsed {
@@ -109,14 +130,14 @@ body {
     }
 
     #mainContent{
-        margin-left: 260px;
-        width: calc(100% - 260px); /* Adjust width to avoid overflow */
+        margin-left: 270px;
+        width: calc(100% - 270px);
     }
 }
 
 #mainContent.expanded {
-    margin-left: 10px;
-    width: calc(100% - 10px); /* Adjust width when sidebar is collapsed */
+    margin-left: 20px;
+    width: calc(100% - 20px);
 }
 
 .toast {
@@ -190,10 +211,18 @@ body {
 /* Loader CSS */
 #loader {
     position: fixed;
-    left: 60%;
+    left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     z-index: 9999;
+}
+
+table.dataTable thead th {
+    white-space: nowrap;
+}
+
+table.dataTable tbody td {
+    white-space: nowrap;
 }
 
 .dataTables_wrapper .dataTables_length select {
@@ -203,9 +232,11 @@ body {
     padding-bottom: 4px;
     padding-top: 8px;
 }
+
 button.dt-button:first-child, div.dt-button:first-child{
     margin-left: 4px;
 }
+
 .dt-buttons .buttons-collection{
     color: #4e75ad;
     border-radius: 4px;
@@ -213,6 +244,7 @@ button.dt-button:first-child, div.dt-button:first-child{
     padding-bottom: 4px;
     padding-top: 8px;
 }
+
 .dt-buttons .btn-refresh{
     color: #4e75ad;
     border-radius: 4px;
@@ -221,19 +253,27 @@ button.dt-button:first-child, div.dt-button:first-child{
     padding-top: 8px;
     margin-left: -7px;
 }
+
 .dt-down-arrow{
     display: none;
 }
-/* .dataTables_filter{
-    dis
-} */
 
 .btn-success{
+    color: #ffffff;
     background-color: #36a86d;
+    border: 0;
 }
 
-.btn{
-    border: none;
+.btn-primary {
+    color: #ffffff;
+    background-color: #007496;
+    border: 0;
+}
+
+.btn {
+    text-transform: uppercase;
+    font-size: 13.5px;
+    outline-offset: 0;
 }
 
 .progress-bar {
@@ -241,7 +281,68 @@ button.dt-button:first-child, div.dt-button:first-child{
     font-weight: bold;
     font-size: 16px;
 }
+
 .custom-vr {
-    width: 2px !important;  /* Force the width if necessary */
-    background-color: #000; /* Set the color */
+    width: 2px !important; 
+    background-color: #000;
+}
+
+.select2-selection__rendered {
+    padding: 3px 10px !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 38px !important;
+}
+
+.select2-selection__arrow, .select2-selection__clear {
+    height: 30px !important;
+    top: 2px !important;
+}
+
+#handsontable-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.datepicker {
+    padding-left: 10px !important;
+}
+
+.datepicker td, thead{
+    text-align: center;
+    width: 45px;
+    height: 20px;
+    padding: 2px 2px 5px 2px;
+    font-size: 14px;
+}
+
+.input-group-text {
+    background-color: transparent;
+    border-left: none;
+    height: 100%; 
+    display: flex; 
+    align-items: center;   
+}
+
+.input-group-text i {
+    font-size: 16px;
+}
+
+.custom_table thead.custom-header th {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    text-align: left;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.custom_table tbody td {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
 }
