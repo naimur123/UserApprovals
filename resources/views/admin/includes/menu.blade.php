@@ -74,7 +74,7 @@
                         <a class="nav-link d-flex align-items-center" href="#orderCollapse" data-bs-toggle="collapse"
                             aria-expanded="{{ request()->routeIs('order_list') || request()->routeIs('order_pending_list') || request()->routeIs('order_create') || request()->routeIs('order_details') ? 'true' : 'false' }}"
                             aria-controls="orderCollapse">
-                            <i class="fa-solid fa-building"></i>
+                            <i class="fa-solid fa-briefcase"></i>
                             Orders
                             <i class="fas fa-chevron-down"></i>
                         </a>
