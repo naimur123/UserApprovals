@@ -5,6 +5,7 @@ namespace App\Http\Components\Traits;
 trait Upload{
 
     /* Define Directories */
+    protected  $user          = "user";
     protected  $trade_license = "trade_license";
     protected  $proposal      = "proposal";
     protected  $workorder     = "workorder";
@@ -24,11 +25,13 @@ trait Upload{
 
         $this->CheckDir($dir);
         $originalFilename = $file->getClientOriginalName();
+        $randomNumber = rand(1000, 9999); 
+        $timestamp = time();
         if(!empty($from) && $from == 'order'){
-            $randomNumber = rand(1000, 9999); 
-            $timestamp = time();
             $originalFilename = $dir . '_' . $randomNumber . '_' . $timestamp . '.' . $file->getClientOriginalExtension();
-        } 
+        } else if(!empty($from) && $from == 'user'){
+            $originalFilename = get_user_name() . '_' . $randomNumber . '_' . $timestamp . '.' . $file->getClientOriginalExtension();
+        }
         $path = $file->storeAs($dir, $originalFilename, 'public');
         return $path;
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('code')->nullable();
             $table->string('name')->nullable();
             $table->longText('description')->nullable();
-            $table->boolean('is_active')->default(1);
+            $table->boolean('is_active')->default(1)->index();
             $table->foreignId('added_by')->nullable()->references('id')->on('users');
             $table->foreignId('updated_by')->nullable()->references('id')->on('users');
             $table->timestamps();

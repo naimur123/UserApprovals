@@ -34,7 +34,7 @@
                     <tr>
                         <td class="bold">Proposal</td>
                         <td>
-                            <a href="{{ asset('storage/' . $order_details->proposal) }}" target="_blank" class="text-decoration-none">
+                            <a href="{{ asset('storage/' . $order_details->proposal) }}" target="_blank" class="text-decoration-none" download>
                                 {{ ucfirst(basename($order_details->proposal)) }}
                             </a>
                         </td>
@@ -44,7 +44,7 @@
                     <tr>
                         <td class="bold">Workorder</td>
                         <td>
-                            <a href="{{ asset('storage/' . $order_details->workorder) }}" target="_blank" class="text-decoration-none">
+                            <a href="{{ asset('storage/' . $order_details->workorder) }}" target="_blank" class="text-decoration-none" download>
                                 {{ ucfirst(basename($order_details->workorder)) }}
                             </a>
                         </td>

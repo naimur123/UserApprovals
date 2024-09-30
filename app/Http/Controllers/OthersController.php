@@ -165,7 +165,7 @@ class OthersController extends Controller
         }else if($current_route == 'item_list'){
             $get_data = get_active_list('items');
         }
-        
+
         $datatable =  DataTables::of($get_data)
                                 ->addColumn('#', function(){ return ++$this->index; })
                                 ->addColumn('types_name', function($row){ return $row->name; })

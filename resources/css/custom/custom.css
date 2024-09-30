@@ -18,6 +18,10 @@ select {
     flex: 1;
 }
 
+.dropdown-menu {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
 .navbar {
     width: 100%;
     position: fixed;
@@ -67,6 +71,7 @@ select {
     z-index: 1050;
 }
 #application_name{
+    position: absolute;
     margin-left: 10px;
 }
 
@@ -346,3 +351,4 @@ button.dt-button:first-child, div.dt-button:first-child{
     border: 1px solid #dee2e6;
     border-bottom: 1px solid #dee2e6;
 }
+

@@ -86,7 +86,7 @@
     $(document).ready(function() {
         $.noConflict();
         table = $('#table').DataTable({
-            processing: false,
+            processing: true,
             serverSide: true,
             ajax:{
                 url: '{{ isset($dataTableUrl) && !empty($dataTableUrl) ? $dataTableUrl : URL::current() }}',

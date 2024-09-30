@@ -75,9 +75,12 @@ class RegisterController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'full_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone' => ['required', 'string', 'min:11', 'max:11', 'unique:users'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'email'     => ['required', 'string', 'email', 'max:255', $request->id == 0 ? 'unique:users,email' : ''],
+            'phone'     => ['required', 'string', 'min:11', 'max:11', $request->id == 0 ? 'unique:users,phone' : ''],
+            'password'  => ['string', 'min:6', 'confirmed', $request->id == 0 ? 'required' : 'nullable'],
+            'image'     => [ 'nullable', 'mimes:jpeg,png'],
+        ], [
+            'image.mimes' => 'Support only jpeg, png',
         ]);
 
         if ($validator->fails()) {
@@ -86,19 +89,29 @@ class RegisterController extends Controller
 
         try{
             DB::beginTransaction();
-            $data = new User();
+            if( $request->id == 0 ){
+                $data = new User();
+                $message = "Successfully Registered";
+            }
+            else{
+                $data = User::find($request->id);
+                $message = "Profile Updated Successfully";
+            }
             $data->full_name       = $request->full_name;
             $data->phone           = $request->phone;
             $data->email           = $request->email;
-            $data->password        = Hash::make($request->password);
-            $data->image           = $request->image;
+            $data->password        = !empty($request->password) ? Hash::make($request->password) : $data->password;
+            if($request->has('image')){
+                $image = $request->file('image');
+                $data->image = $this->uploadImage($image,$this->user, 'user');
+            }
             $data->is_approved     = 1;
             $data->is_active       = 1;
             $data->save();
             DB::commit();
 
             // $this->send_approval($data, $request);
-            set_alert('success', 'Successfully Registered');
+            set_alert('success', $message);
             return back();
 
         }catch(Exception $e){

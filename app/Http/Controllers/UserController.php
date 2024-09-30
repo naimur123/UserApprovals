@@ -94,8 +94,8 @@ class UserController extends Controller
 
     /* Get user ajax */
     public function get_user(Request $request){
+        $user = User::find($request->id);
         if( $request->ajax() ){
-            $user = User::find($request->id);
             if(!empty($user)){
                 return response()->json([
                     'success' => true,
@@ -103,6 +103,15 @@ class UserController extends Controller
                 ]);
             }
         }
+        if($user->id != current_user() && !is_admin()){
+            set_alert('error', 'Not Allowed');
+            return back();
+        }
+        $params = [
+            'pageTitle' => 'Edit Profile',
+            'user'      => $user
+        ];
+        return view('admin.user.register', $params);
     }
 
     /* Resend User Approve Request */

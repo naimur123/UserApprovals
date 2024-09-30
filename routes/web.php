@@ -33,6 +33,7 @@ Route::middleware(["auth:user"])->group(function(){
     Route::get('/register', [UserController::class,'showRegisterForm'])->name('user_register');
     Route::post('/register',[RegisterController::class, 'create'])->name('register');
     Route::post('/get_user', [UserController::class, 'get_user'])->name('get_user');
+    Route::get('/edit_user/{id}', [UserController::class, 'get_user'])->name('edit_user');
     Route::get('/user_list', [UserController::class, 'index'])->name('user_list');
     Route::get('/user_list/{request_list}', [UserController::class, 'index'])->name('user_pending_list');
     Route::post('/approve_user', [UserController::class, 'approve_pending_user'])->name('approve_pending_user');

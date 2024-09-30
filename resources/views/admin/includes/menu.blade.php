@@ -1,28 +1,52 @@
 <body>
     <div class="row">
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color:#f9f9f9">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color:#f9f9f9;">
+            <!-- Application Name -->
             <h5 id="application_name">UserRegistration</h5>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav" style="margin-left: 80%">
-                    <!-- Profile image -->
-                    <li class="nav-item" >
-                        <img src="{{ asset('storage/' . Auth::user()->image) }}" class="rounded-circle" alt="Image"
-                            style="height: 30px; width:30px">
-                    </li>
-                    <!-- Dropdown menu -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ Auth::user()->full_name }}
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="margin-left:20px !important">
-                            <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
+
+            <!-- Navbar content (This will remain visible without collapsing) -->
+            <div class="navbar-nav ms-auto">
+                <!-- Profile Dropdown Trigger (Image) -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" id="navbarDropdown" role="button"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="{{ asset('storage/' . Auth::user()->image) }}" class="rounded-circle" alt="Profile Image"
+                            style="height: 40px; width: 40px;">
+                    </a>
+
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="navbarDropdown" style="min-width: 250px;">
+                        <!-- Profile Picture and Name -->
+                        <div class="text-center">
+                            <img src="{{ asset('storage/' . Auth::user()->image) }}" class="rounded-circle mb-2" alt="Profile Image"
+                                style="height: 80px; width: 80px;">
+                            <h6 class="mb-1">{{ get_user_name() }}</h6>
                         </div>
-                    </li>
-                </ul>
+
+                        <!-- Divider -->
+                        <hr class="dropdown-divider">
+
+                        <!-- Profile Links -->
+                        <a class="dropdown-item d-flex align-items-center" href="{{ route('edit_user', current_user()) }}">
+                            <span class="me-2" style="min-width: 20px;">
+                                <i class="fa-solid fa-user-pen"></i>
+                            </span>
+                            Edit Profile
+                        </a>
+                        <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}">
+                            <span class="me-2" style="min-width: 20px;">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                            </span>
+                            Logout
+                        </a>
+                    </div>
+                </li>
             </div>
         </nav>
     </div>
+    
+    
 
     <div class="row">
         <div class="col-md-2">

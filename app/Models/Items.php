@@ -25,10 +25,21 @@ class Items extends Model
 
     /* Generate Random ItemCode */
     protected static function generateItemCode(){
-        $item_code = 'i-' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
+
+        $item_prefix = 'i-';
+        $lastItemCode = self::orderBy('id', 'desc')->first();
+        if(empty($lastItemCode->code) || empty($lastItemCode->code)){
+            $number  = str_pad(1 , 5, "0", STR_PAD_LEFT);
+        }
+        else{
+            $remove_prefix = substr($lastItemCode->code, 2);
+            $number  = str_pad(($remove_prefix + 1) , 5, "0", STR_PAD_LEFT);
+        }
+        
+        $item_code = $item_prefix . $number;
 
         while (self::where('code', $item_code)->exists()) {
-            $item_code = 'i-' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
+            return self::generateItemCode();
         }
 
         return $item_code;
